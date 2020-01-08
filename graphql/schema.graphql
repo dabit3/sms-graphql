@@ -1,0 +1,105 @@
+type SMS {
+	originationNumber: String!
+	messageBody: String!
+	id: ID
+}
+
+type Mutation {
+	createSMS(input: CreateSMSInput!): SMS
+	updateSMS(input: UpdateSMSInput!): SMS
+	deleteSMS(input: DeleteSMSInput!): SMS
+}
+
+type Query {
+	getSMS(originationNumber: String!): SMS
+	listSMS(filter: TableSMSFilterInput, limit: Int, nextToken: String): SMSConnection
+}
+
+input CreateSMSInput {
+	id: ID!
+	originationNumber: String!
+	messageBody: String!
+}
+
+input DeleteSMSInput {
+	originationNumber: String!
+}
+
+type SMSConnection {
+	items: [SMS]
+	nextToken: String
+}
+
+type Subscription {
+	onCreateSMS(originationNumber: String, messageBody: String): SMS
+		@aws_subscribe(mutations: ["createSMS"])
+	onUpdateSMS(originationNumber: String, messageBody: String): SMS
+		@aws_subscribe(mutations: ["updateSMS"])
+	onDeleteSMS(originationNumber: String, messageBody: String): SMS
+		@aws_subscribe(mutations: ["deleteSMS"])
+}
+
+input TableBooleanFilterInput {
+	ne: Boolean
+	eq: Boolean
+}
+
+input TableFloatFilterInput {
+	ne: Float
+	eq: Float
+	le: Float
+	lt: Float
+	ge: Float
+	gt: Float
+	contains: Float
+	notContains: Float
+	between: [Float]
+}
+
+input TableIDFilterInput {
+	ne: ID
+	eq: ID
+	le: ID
+	lt: ID
+	ge: ID
+	gt: ID
+	contains: ID
+	notContains: ID
+	between: [ID]
+	beginsWith: ID
+}
+
+input TableIntFilterInput {
+	ne: Int
+	eq: Int
+	le: Int
+	lt: Int
+	ge: Int
+	gt: Int
+	contains: Int
+	notContains: Int
+	between: [Int]
+}
+
+input TableSMSFilterInput {
+	originationNumber: TableStringFilterInput
+	messageBody: TableStringFilterInput
+}
+
+input TableStringFilterInput {
+	ne: String
+	eq: String
+	le: String
+	lt: String
+	ge: String
+	gt: String
+	contains: String
+	notContains: String
+	between: [String]
+	beginsWith: String
+}
+
+input UpdateSMSInput {
+	originationNumber: String!
+	messageBody: String
+}
